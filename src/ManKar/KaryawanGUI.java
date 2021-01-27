@@ -34,6 +34,7 @@ public class KaryawanGUI {
 
     File file;
     JFileChooser jfc;
+    Dao dao = new Dao();
 
     public KaryawanGUI(){}
 
@@ -75,6 +76,13 @@ public class KaryawanGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        try {
+            BufferedImage img = dao.getImageById(1);
+            jLbl_photo.setIcon(new ImageIcon(img));
+        }catch (Exception err){
+            err.printStackTrace();
+        }
+
     }
 
     public void chooseFile(JLabel label, JLabel labeldesc){
@@ -92,10 +100,12 @@ public class KaryawanGUI {
                 String path = new File(".").getCanonicalPath();
                 System.out.println(path);
                 FileUtils.copyFileToDirectory(file, new File(path + "/image"));
+                dao.imageWrite(file);
             }catch (Exception err){
                 err.printStackTrace();
             }
         }
     }
+
 
 }
