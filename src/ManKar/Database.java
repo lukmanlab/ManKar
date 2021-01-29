@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class Database {
-    private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DATABASE_URL = "jdbc:mysql://127.0.0.1/karyawan";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root123";

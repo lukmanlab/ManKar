@@ -2,15 +2,10 @@ package ManKar;
 
 import org.apache.commons.io.FileUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -35,6 +30,10 @@ public class KaryawanGUI {
     File file;
     JFileChooser jfc;
 
+    Dao dao = new Dao();
+    Karyawan karyawan = new Karyawan();
+
+
     public KaryawanGUI(){}
 
     public KaryawanGUI(Karyawan karyawan) {
@@ -42,19 +41,28 @@ public class KaryawanGUI {
         updateButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                chooseFile(jLbl_photo, jLbl_dPhoto);
+                String filename = chooseFile(jLbl_photo, jLbl_dPhoto);
+                dao.tambahFoto(filename, karyawan.getId());
             }
         });
         updateButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                chooseFile(jLbl_ktp, jLbl_dKtp);
+                String filename = chooseFile(jLbl_ktp, jLbl_dKtp);
+                dao.tambahKtp(filename, karyawan.getId());
             }
         });
         updateButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                chooseFile(jLbl_kk, jLbl_dKk);
+                String filename = chooseFile(jLbl_kk, jLbl_dKk);
+                dao.tambahKk(filename, karyawan.getId());
+            }
+        });
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dao.tambahKaryawan(karyawan);
             }
         });
 
@@ -67,6 +75,7 @@ public class KaryawanGUI {
             gender_cb.setSelectedItem("Female");
         }
 
+        tampil(karyawan.getId());
     }
 
     public void Init(){
@@ -77,25 +86,47 @@ public class KaryawanGUI {
         frame.setVisible(true);
     }
 
-    public void chooseFile(JLabel label, JLabel labeldesc){
-        jfc = new JFileChooser();
-        if (jfc.showOpenDialog(label) == JFileChooser.APPROVE_OPTION){
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Image image = toolkit.getImage(jfc.getSelectedFile().getAbsolutePath());
-            Image imageResize = image.getScaledInstance(200,100,Image.SCALE_SMOOTH);
-            ImageIcon imageIcon = new ImageIcon(imageResize);
-            label.setIcon(imageIcon);
-            labeldesc.setText(jfc.getSelectedFile().getName());
-            file = new File(jfc.getSelectedFile().getPath());
 
+    public String chooseFile(JLabel label, JLabel labeldesc) {
+        jfc = new JFileChooser();
+        String filename = null;
+        if (jfc.showOpenDialog(label) == JFileChooser.APPROVE_OPTION) {
+            filename = jfc.getSelectedFile().getName();
+            tampilGambar(label, labeldesc, jfc.getSelectedFile().getAbsolutePath(), filename);
+            file = new File(jfc.getSelectedFile().getPath());
             try {
                 String path = new File(".").getCanonicalPath();
-                System.out.println(path);
                 FileUtils.copyFileToDirectory(file, new File(path + "/image"));
-            }catch (Exception err){
+            } catch (Exception err) {
                 err.printStackTrace();
             }
         }
+        return filename;
+    }
+
+    public void tampil(String id) {
+        try {
+            String filefoto = dao.viewFoto(id);
+            String path = new File(".").getCanonicalPath();
+            tampilGambar(jLbl_photo, jLbl_dPhoto,path+"/image/"+filefoto, filefoto);
+            String filektp = dao.viewKtp(id);
+            tampilGambar(jLbl_ktp, jLbl_dKtp, path+"/image/"+filektp, filektp);
+            String filekk = dao.viewKk(id);
+            tampilGambar(jLbl_kk, jLbl_dKk, path+"/image/"+filekk, filekk);
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+    }
+
+
+    public void tampilGambar(JLabel label, JLabel labeldesc, String path, String filename) {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage(path);
+        Image imageResize = image.getScaledInstance(200, 100, Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(imageResize);
+        label.setIcon(imageIcon);
+        labeldesc.setText(filename);
     }
 
 }
