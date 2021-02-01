@@ -1,5 +1,7 @@
 package ManKar;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.sql.ResultSet;
 
 public class Dao {
@@ -11,17 +13,18 @@ public class Dao {
 
         try {
             db.connect();
-            rs = db.select("SELECT * FROM tb_login WHERE username='"+login.getUsername()+"' AND password='"+login.getPassword()+"' ");
+            rs = db.select("SELECT * FROM tb_login WHERE username='"+login.getUsername()+"'");
             rs.next();
-                if (login.getUsername().equals(rs.getString("username")) && login.getPassword().equals(rs.getString("password"))){
-                    //id = rs.getString("id");
-                    return true;
+                if (login.getUsername().equals(rs.getString("username"))){
+                        String hash = rs.getString("password").toUpperCase();
+                        String password = login.getPassword();
+                        return verifikasiPassword(hash, password);
                 }
-            db.disconnect();
-        }catch (Exception err){
-            System.out.println("Input Data Salah!");
+                    db.disconnect();
+                }
+                catch (Exception err){
+                    System.out.println("Password Salah!");
         }
-
         return false;
         // System.out.println(login.getPassword() + "\n" + rs.getString("password"));
     }
@@ -109,5 +112,10 @@ public class Dao {
             err.printStackTrace();
         }
         return kk;
+    }
+
+    public boolean verifikasiPassword(String hash, String password)  {
+        String md5Hex = DigestUtils.md5Hex(password).toUpperCase();
+        return md5Hex.equals(hash);
     }
 }

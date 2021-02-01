@@ -66,6 +66,13 @@ public class KaryawanGUI {
             }
         });
 
+//        resetButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                dao.verifikasiPassword();
+//            }
+//        });
+
         id_field.setText(karyawan.getId());
         fn_field.setText(karyawan.getFname());
         ln_field.setText(karyawan.getLname());
