@@ -15,6 +15,14 @@ public class LoginGUI {
 
     public LoginGUI(){
         JFrame frame = new JFrame("Login");
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menuAdministrator = new JMenu("Administrator");
+        JMenuItem loginAdmin = new JMenuItem("Login");
+        menuBar.add(menuAdministrator);
+        menuAdministrator.add(loginAdmin);
+        frame.setJMenuBar(menuBar);
+
         frame.setContentPane(jp_login);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -29,8 +37,9 @@ public class LoginGUI {
                     Login logininput = new Login(usernamefield.getText(), new String(passwordfield.getPassword()));
                     if (dao.loginKaryawan(logininput)){
                         JOptionPane.showMessageDialog(null ,"Berhasil Login!");
-                        Karyawan objKar = new Karyawan("P001","Ahmad Lukman", "Hakim","F");
-                        new KaryawanGUI(objKar);
+
+                        new KaryawanGUI(dao.getKaryawan(dao.getId(logininput)));
+
                         frame.setVisible(false);
                     }else{
                         JOptionPane.showMessageDialog(null ,"Login Gagal! Username atau Password Salah.");
@@ -46,6 +55,24 @@ public class LoginGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        loginAdmin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JPasswordField pass = new JPasswordField();
+                int okeClick = JOptionPane.showConfirmDialog(null, pass, "Enter Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (okeClick == JOptionPane.OK_OPTION){
+                    String password = new String(pass.getPassword());
+                    if (dao.loginAdmin(password) == true){
+                        new AdminGUI();
+                        frame.setVisible(false);
+                    }else{
+                        JOptionPane.showMessageDialog(null ,"Login Gagal! Password Salah.");
+                    }
+                }
             }
         });
     }

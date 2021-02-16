@@ -2,6 +2,7 @@ package ManKar;
 
 public class Karyawan {
     private String id;
+    private String nik;
     private String fname;
     private String lname;
     private String gender;
@@ -9,6 +10,11 @@ public class Karyawan {
     private String foto;
     private String ktp;
     private String kk;
+    private String ijazah;
+    private String bpjs_kesehatan;
+    private String bpjs_ketenagakerjaan;
+    private String asuransi;
+    private String sertifikat;
 
     public Karyawan(){}
 
@@ -31,6 +37,14 @@ public class Karyawan {
         this.id = id;
     }
 
+    public String getNik(){
+        return this.nik;
+    }
+
+    public void setNik(String nik){
+        this.nik = nik;
+    }
+
     public String getFname() {
         return fname;
     }
@@ -41,6 +55,10 @@ public class Karyawan {
 
     public String getLname() {
         return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 
     public String getGender() {
@@ -81,5 +99,45 @@ public class Karyawan {
 
     public void setKtp(String ktp) {
         this.ktp = ktp;
+    }
+
+    public String getIjazah(){
+        return this.ijazah;
+    }
+
+    public void setIjazah(String ijazah){
+        this.ijazah = ijazah;
+    }
+
+    public String getBpjs_kesehatan(){
+        return this.bpjs_kesehatan;
+    }
+
+    public void setBpjs_kesehatan(String bpjs_kesehatan){
+        this.bpjs_kesehatan = bpjs_kesehatan;
+    }
+
+    public String getBpjs_ketenagakerjaan() {
+        return this.bpjs_ketenagakerjaan;
+    }
+
+    public void setBpjs_ketenagakerjaan(String bpjs_ketenagakerjaan){
+        this.bpjs_ketenagakerjaan = bpjs_ketenagakerjaan;
+    }
+
+    public String getAsuransi() {
+        return this.asuransi;
+    }
+
+    public void setAsuransi(String asuransi){
+        this.asuransi = asuransi;
+    }
+
+    public String getSertifikat() {
+        return this.sertifikat;
+    }
+
+    public void setSertifikat(String sertifikat){
+        this.sertifikat = sertifikat;
     }
 }
